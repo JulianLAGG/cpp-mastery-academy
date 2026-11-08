@@ -1,0 +1,18 @@
+{
+  "name": "cpp-mastery-academy",
+  "version": "1.0.0",
+  "description": "Plataforma interactiva para aprender C++ desde cero hasta nivel medio con compilador g++ real integrado",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test-server.js"
+  },
+  "keywords": [
+    "c++",
+    "curso",
+    "educacion",
+    "g++",
+    "compilador"
+  ],
+  "license": "MIT"
+}

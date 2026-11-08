@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>C++ Mastery Academy | Curso Interactivo C++17 (Gruvbox Edition)</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <!-- Barra Superior estilo Zed IDE -->
+  <header class="topbar">
+    <div class="brand-group">
+      <button class="icon-btn sidebar-toggle-btn" id="toggleSidebarBtn" title="Mostrar/Ocultar temario (Ctrl + B)" aria-label="Alternar barra lateral">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2.5" width="12" height="11" rx="2"></rect>
+          <line x1="6" y1="2.5" x2="6" y2="13.5"></line>
+        </svg>
+      </button>
+      <div class="brand">
+        <div class="brand-logo">C++</div>
+        <div>
+          <h1 class="brand-title">C++ Mastery Academy</h1>
+          <span class="brand-subtitle">De Cero a Nivel Medio · Compilador g++ Real</span>
+        </div>
+      </div>
+    </div>
+
+    <nav class="main-nav" aria-label="Navegación principal">
+      <button class="nav-btn active" data-view="course" id="navCourseBtn" title="Curso interactivo paso a paso">
+        <span class="nav-icon">📚</span>
+        <span>Curso Guiado</span>
+      </button>
+      <button class="nav-btn" data-view="playground" id="navPlaygroundBtn" title="Editor libre para experimentar con C++17">
+        <span class="nav-icon">⚡</span>
+        <span>Laboratorio Libre</span>
+      </button>
+      <button class="nav-btn" data-view="cheatsheet" id="navCheatsheetBtn" title="Referencia rápida de sintaxis C++">
+        <span class="nav-icon">🧭</span>
+        <span>Referencia Rápida</span>
+      </button>
+    </nav>
+
+    <div class="user-stats">
+      <div class="compiler-pill" id="compilerStatusPill" title="Verificando compilador g++ local...">
+        <span class="dot"></span>
+        <span id="compilerStatusText">g++ C++17</span>
+      </div>
+      <div class="xp-box" title="Puntos de experiencia acumulados">
+        <span class="xp-rank" id="userRankBadge">Nivel 0: Novato</span>
+        <span class="xp-divider">·</span>
+        <span class="xp-points" id="userXpCount">0 XP</span>
+      </div>
+      <div class="progress-mini" title="Progreso total del curso">
+        <div class="progress-mini-label">
+          <span>Progreso</span>
+          <strong id="progressPercentText">0%</strong>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progressBarFill" style="width: 0%"></div>
+        </div>
+      </div>
+      <button class="icon-btn" id="shortcutsHelpBtn" title="Atajos de teclado (?)">⌨</button>
+      <button class="icon-btn danger-hover" id="resetProgressBtn" title="Reiniciar progreso del curso">↺</button>
+    </div>
+  </header>
+
+  <!-- Contenedor Principal: Curso + IDE -->
+  <main class="workspace" id="courseWorkspace">
+    <!-- Barra Lateral de Módulos y Lecciones -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="search-wrapper">
+          <span class="search-icon">⌕</span>
+          <input
+            type="search"
+            id="lessonSearchInput"
+            class="search-input"
+            placeholder="Buscar lección (ej. punteros, vector)..."
+          />
+        </div>
+        <div class="sidebar-filters" id="sidebarFilters">
+          <button class="filter-chip active" data-filter="all">Todas</button>
+          <button class="filter-chip" data-filter="pending">Pendientes</button>
+          <button class="filter-chip" data-filter="completed">Completadas</button>
+        </div>
+      </div>
+      <div class="curriculum-list" id="curriculumList"></div>
+    </aside>
+
+    <!-- Panel Central: Lección, Ejemplos, Quiz y Reto -->
+    <section class="lesson-panel" id="lessonPanel">
+      <div class="lesson-header">
+        <div class="lesson-breadcrumb" id="lessonBreadcrumb">
+          <span>Módulo 1</span>
+          <span class="crumb-sep">›</span>
+          <span>Lección 1</span>
+        </div>
+        <div class="lesson-meta">
+          <span class="badge-level" id="lessonLevelBadge">Nivel 0</span>
+          <span class="badge-xp" id="lessonXpBadge">+100 XP</span>
+          <span class="badge-status" id="lessonStatusBadge">Pendiente</span>
+        </div>
+        <h2 id="lessonTitle">Cargando lección...</h2>
+        <p class="lesson-summary" id="lessonSummary"></p>
+
+        <div class="lesson-tabs" role="tablist">
+          <button class="lesson-tab active" data-tab="theory">
+            <span class="tab-step">1</span> Teoría y Ejemplos
+          </button>
+          <button class="lesson-tab" data-tab="quiz">
+            <span class="tab-step">2</span> Cuestionario <span class="tab-pill" id="quizCountLabel">0</span>
+          </button>
+          <button class="lesson-tab" data-tab="challenge">
+            <span class="tab-step">3</span> Reto Práctico 🎯
+          </button>
+        </div>
+      </div>
+
+      <div class="lesson-body" id="lessonBody">
+        <!-- Tab 1: Teoría -->
+        <div class="tab-content active" id="tab-theory">
+          <div class="theory-content" id="theoryContainer"></div>
+          <div class="examples-section" id="examplesContainer"></div>
+          <div class="step-cta">
+            <button class="btn btn-secondary" id="goToQuizBtn">Continuar al Cuestionario →</button>
+          </div>
+        </div>
+
+        <!-- Tab 2: Quiz -->
+        <div class="tab-content" id="tab-quiz">
+          <div class="quiz-header-banner">
+            <span>🧠 Comprueba lo aprendido seleccionando la respuesta correcta en cada pregunta.</span>
+            <span class="quiz-score-pill" id="quizScorePill">0 / 0 respondidas</span>
+          </div>
+          <div class="quiz-container" id="quizContainer"></div>
+          <div class="step-cta">
+            <button class="btn btn-secondary" id="goToChallengeBtn">Ir al Reto Práctico 🎯 →</button>
+          </div>
+        </div>
+
+        <!-- Tab 3: Reto Práctico -->
+        <div class="tab-content" id="tab-challenge">
+          <div class="challenge-card" id="challengeContainer"></div>
+        </div>
+      </div>
+
+      <footer class="lesson-footer">
+        <button class="btn btn-outline" id="prevLessonBtn" title="Ir a la lección anterior (Alt + ←)">← Anterior</button>
+        <span class="lesson-position-indicator" id="lessonPositionIndicator">Lección 1 de 12</span>
+        <button class="btn btn-outline" id="nextLessonBtn" title="Ir a la siguiente lección (Alt + →)">Siguiente →</button>
+      </footer>
+    </section>
+
+    <!-- Panel Derecho: Editor de Código C++ y Consola g++ -->
+    <section class="ide-panel" id="idePanel">
+      <div class="ide-toolbar">
+        <div class="ide-tabs">
+          <div class="ide-file-tab active">
+            <span class="file-icon">cpp</span>
+            <span>main.cpp</span>
+            <span class="unsaved-dot" id="savedCodeIndicator" title="Código guardado automáticamente"></span>
+          </div>
+          <span class="ide-mode-tag" id="ideModeTag">Modo Lección</span>
+        </div>
+
+        <!-- Controles del Editor y Compilador -->
+        <div class="ide-actions">
+          <div class="editor-font-controls" title="Tamaño de fuente del editor">
+            <button class="tool-mini-btn" id="fontDecreaseBtn" title="Reducir fuente">A-</button>
+            <button class="tool-mini-btn" id="fontIncreaseBtn" title="Aumentar fuente">A+</button>
+          </div>
+
+          <button class="tool-mini-btn" id="copyEditorCodeBtn" title="Copiar código del editor">Copiar</button>
+
+          <select id="templateSelect" class="template-select" title="Cargar plantilla de ejemplo">
+            <option value="">Plantillas...</option>
+            <option value="hola">Hola Mundo</option>
+            <option value="interactivo">Entrada std::cin</option>
+            <option value="poo">POO: Clases y Herencia</option>
+            <option value="stl">STL: Vector y Sort</option>
+          </select>
+
+          <button class="btn btn-sm btn-outline" id="resetCodeBtn" title="Restaurar código inicial del reto">
+            ↺ Restaurar
+          </button>
+          <button class="btn btn-sm btn-run" id="runCodeBtn" title="Compilar y ejecutar con g++ (Ctrl + Enter)">
+            ▶ Ejecutar <kbd class="btn-kbd">⌃↵</kbd>
+          </button>
+          <button class="btn btn-sm btn-verify" id="verifyChallengeBtn" title="Evaluar casos de prueba del reto (Ctrl + Shift + Enter)">
+            ✓ Verificar Reto
+          </button>
+        </div>
+      </div>
+
+      <!-- Editor de Código con Resaltado Gruvbox y Números de Línea -->
+      <div class="editor-wrapper" id="editorWrapper">
+        <div class="line-numbers" id="lineNumbers">1</div>
+        <div class="code-stage">
+          <pre class="code-highlight" id="codeHighlight" aria-hidden="true"><code id="codeHighlightContent"></code></pre>
+          <textarea
+            id="codeEditor"
+            class="code-editor"
+            spellcheck="false"
+            autocapitalize="off"
+            autocomplete="off"
+            autocorrect="off"
+            aria-label="Editor de código C++"
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Panel Inferior: Entrada estándar (stdin) y Salida de Terminal -->
+      <div class="terminal-split" id="terminalSplit">
+        <div class="stdin-panel">
+          <div class="panel-subheader">
+            <div class="panel-subheader-title">
+              <span>⌨️ Entrada (<code>std::cin</code>)</span>
+              <span class="stdin-badge hidden" id="stdinActiveBadge">con datos</span>
+            </div>
+            <button class="tool-mini-btn" id="clearStdinBtn" title="Vaciar entrada estándar">Limpiar</button>
+          </div>
+          <textarea
+            id="stdinInput"
+            class="stdin-textarea"
+            placeholder="Escribe aquí los datos de entrada (uno por línea o separados por espacio)..."
+            spellcheck="false"
+          ></textarea>
+        </div>
+
+        <div class="output-panel">
+          <div class="panel-subheader">
+            <div class="panel-subheader-title">
+              <span>🖥️ Terminal <code>g++</code></span>
+              <span class="exec-metrics" id="execMetrics">Listo para compilar</span>
+            </div>
+            <div class="terminal-controls">
+              <button class="tool-mini-btn" id="clearTerminalBtn" title="Limpiar salida de consola">Limpiar</button>
+              <button class="tool-mini-btn" id="toggleTerminalSizeBtn" title="Expandir / Restaurar altura de terminal">↕</button>
+            </div>
+          </div>
+          <div class="terminal-output" id="terminalOutput">
+            <span class="terminal-muted">Pulsa "▶ Ejecutar" o presiona Ctrl + Enter para compilar y correr tu código C++.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Vista: Hoja de Referencia (Cheatsheet) -->
+  <section class="cheatsheet-view hidden" id="cheatsheetView">
+    <div class="cheatsheet-top">
+      <div class="cheatsheet-header">
+        <h2>🧭 Hoja de Referencia Rápida de C++17</h2>
+        <p>Consulta la sintaxis esencial en cualquier momento, copia fragmentos o envíalos al Laboratorio Libre.</p>
+      </div>
+      <div class="cheatsheet-search-box">
+        <input
+          type="search"
+          id="cheatsheetSearchInput"
+          class="search-input"
+          placeholder="Filtrar sintaxis (ej. vector, for, puntero, struct)..."
+        />
+      </div>
+    </div>
+    <div class="cheatsheet-grid" id="cheatsheetGrid"></div>
+  </section>
+
+  <!-- Barra de Estado Inferior estilo Zed IDE -->
+  <footer class="statusbar">
+    <div class="statusbar-left">
+      <span class="status-mode">ZED · GRUVBOX DARK</span>
+      <span class="status-item" id="statusBranch">⎇ main.cpp</span>
+      <span class="status-item" id="statusLessonInfo">Módulo 1</span>
+    </div>
+    <div class="statusbar-right">
+      <span class="status-item status-shortcut"><b>Ctrl+Enter</b> Ejecutar</span>
+      <span class="status-item status-shortcut"><b>Ctrl+Shift+Enter</b> Verificar</span>
+      <span class="status-item status-shortcut"><b>Ctrl+B</b> Temario</span>
+      <span class="status-item" id="cursorPosIndicator">Ln 1, Col 1</span>
+      <span class="status-item">UTF-8</span>
+      <span class="status-item status-cpp">C++17 (GCC)</span>
+    </div>
+  </footer>
+
+  <!-- Modal de Atajos de Teclado -->
+  <div class="modal-backdrop hidden" id="shortcutsModal">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="shortcutsModalTitle">
+      <div class="modal-header">
+        <h3 id="shortcutsModalTitle">⌨️ Atajos de Teclado y Productividad</h3>
+        <button class="icon-btn" id="closeShortcutsModalBtn" aria-label="Cerrar">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="shortcut-row">
+          <span>Compilar y ejecutar código en <code>g++</code></span>
+          <kbd>Ctrl + Enter</kbd>
+        </div>
+        <div class="shortcut-row">
+          <span>Verificar casos de prueba del reto</span>
+          <kbd>Ctrl + Shift + Enter</kbd>
+        </div>
+        <div class="shortcut-row">
+          <span>Mostrar / Ocultar barra lateral de lecciones</span>
+          <kbd>Ctrl + B</kbd>
+        </div>
+        <div class="shortcut-row">
+          <span>Indentar / Des-indentar línea o selección</span>
+          <kbd>Tab / Shift + Tab</kbd>
+        </div>
+        <div class="shortcut-row">
+          <span>Navegar entre lección anterior y siguiente</span>
+          <kbd>Alt + ← / Alt + →</kbd>
+        </div>
+        <div class="shortcut-row">
+          <span>Cerrar ventanas emergentes</span>
+          <kbd>Esc</kbd>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contenedor de Notificaciones Toast -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <script src="/curriculum.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
