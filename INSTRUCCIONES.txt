@@ -1,17 +1,18 @@
 ================================================================================
                   C++ MASTERY ACADEMY - DE CERO A NIVEL MEDIO
+                     GUIA DE INSTALACION (LINUX Y WINDOWS)
 ================================================================================
 
 1. CONTEXTO DE LA APLICACION
 --------------------------------------------------------------------------------
-C++ Mastery Academy es una plataforma educativa interactiva de escritorio/web
-local diseñada para aprender a programar en C++ (estándar C++17) desde cero
-absoluto hasta un nivel intermedio sólido.
+C++ Mastery Academy es una plataforma educativa interactiva local diseñada para
+aprender a programar en C++ (estándar C++17) desde cero absoluto hasta un nivel
+intermedio sólido, con una interfaz inspirada en Zed IDE (Gruvbox Dark).
 
 A diferencia de un curso estático, la aplicación integra el compilador real
-`g++` instalado en tu sistema Linux. Esto permite escribir, compilar, ejecutar
-y depurar código C++ real directamente desde el navegador, además de validar
-automáticamente los ejercicios prácticos con casos de prueba reales.
+`g++` instalado en tu sistema (Linux o Windows). Esto permite escribir,
+compilar, ejecutar y depurar código C++ real directamente desde el navegador,
+además de validar automáticamente los ejercicios prácticos con casos de prueba.
 
 Características principales:
 - Curso guiado estructurado en 8 Módulos y 17 Lecciones progresivas:
@@ -26,74 +27,109 @@ Características principales:
               expresiones lambda)
   * Módulo 8: Manejo de excepciones (try/catch/throw), archivos (<fstream>) y
               Proyecto Final Integrador (Sistema de Inventario POO + STL).
-- Editor de código C++ integrado con números de línea, soporte de tabulación y
-  atajo rápido (Ctrl + Enter) para compilar y ejecutar.
+- Editor de código C++ con resaltado de sintaxis Gruvbox Dark en vivo,
+  auto-cierre de llaves/paréntesis, auto-indentación inteligente y atajos
+  rápidos (Ctrl + Enter para ejecutar, Ctrl + Shift + Enter para verificar).
 - Caja de Entrada Estándar (stdin) para probar programas que leen datos con
   `std::cin` o `std::getline`.
 - Protección automática contra bucles infinitos (límite de 4 segundos por
-  ejecución) y reporte claro de errores de compilación o memoria (SIGSEGV).
+  ejecución).
 - Cuestionarios interactivos (Quizzes) y Retos Prácticos autocorregidos en cada
   lección, con pistas y solución de referencia.
 - Sistema de progreso y gamificación (puntos XP y rangos) guardado
   automáticamente en el navegador (localStorage).
 - "Laboratorio Libre" (Playground) con plantillas rápidas para experimentar.
-- "Hoja de Referencia" (Cheatsheet) con la sintaxis esencial de C++17.
+- "Referencia Rápida" (Cheatsheet) con buscador y copia rápida de sintaxis C++17.
 
 
-2. REQUISITOS DEL SISTEMA
+2. REQUISITOS DEL SISTEMA (LINUX Y WINDOWS)
 --------------------------------------------------------------------------------
 - Node.js (v16 o superior)
-- Compilador g++ (GCC C++) instalado en el sistema.
-  Puedes verificar ambos en tu terminal con:
-    node -v
-    g++ --version
-- No requiere conexión a internet ni instalación de paquetes externos (usa los
+- Compilador g++ (GCC C++) instalado y disponible en el PATH del sistema.
+- No requiere conexión a internet ni ejecutar `npm install` (usa únicamente los
   módulos nativos de Node.js para máxima velocidad y cero dependencias rotas).
 
+Puedes verificar que ambos están listos en tu terminal (Bash, PowerShell o CMD):
+    node -v
+    g++ --version
 
-3. COMO INICIAR LA APLICACION
+
+3. INSTALACION Y EJECUCION EN LINUX
 --------------------------------------------------------------------------------
-Paso 1: Abre una terminal y entra en la carpeta del proyecto:
+Paso 1: Instalar Node.js y g++ (si aún no los tienes):
+  * Ubuntu / Debian / Mint:
+      sudo apt update && sudo apt install -y nodejs npm build-essential g++ git
+  * Arch Linux / Manjaro:
+      sudo pacman -S --needed nodejs npm gcc git
+  * Fedora:
+      sudo dnf install -y nodejs npm gcc-c++ git
 
-    cd /home/wachinex/Documentos/appAgy
+Paso 2: Entrar en la carpeta del proyecto e iniciar el servidor:
+      cd cpp-mastery-academy
+      npm start
+      (o bien: node server.js)
 
-Paso 2: Inicia el servidor con cualquiera de estos dos comandos:
+Paso 3: Abrir el navegador en:
+      http://localhost:3000
 
-    npm start
-    (o bien: node server.js)
 
-Paso 3: Verás en la terminal el mensaje:
-    "🚀 C++ Mastery Academy corriendo en: http://localhost:3000"
+4. INSTALACION Y EJECUCION EN WINDOWS (10 / 11)
+--------------------------------------------------------------------------------
+Paso 1: Instalar Node.js
+  Descarga el instalador LTS desde https://nodejs.org/ o ejecuta en PowerShell:
+      winget install OpenJS.NodeJS.LTS
 
-Paso 4: Abre tu navegador web y entra en:
+Paso 2: Instalar el compilador g++ (MinGW-w64)
+  * Opción A (Rápida por PowerShell con winget):
+      winget install BrechtSanders.WinLibs.POSIX.UCRT
+    (Cierra y vuelve a abrir PowerShell al terminar).
 
-    http://localhost:3000
+  * Opción B (Mediante MSYS2 - https://www.msys2.org/):
+    1. Instala MSYS2 y en su terminal ejecuta:
+         pacman -S --needed mingw-w64-ucrt-x86_64-gcc
+    2. Añade la carpeta `C:\msys64\ucrt64\bin` a la variable `Path` en las
+       "Variables de entorno del sistema" de Windows.
 
-(Nota: Si el puerto 3000 estuviera ocupado por otro programa, puedes iniciarla
-en otro puerto ejecutando: PORT=4000 npm start)
+Paso 3: Verificar en una nueva ventana de PowerShell o CMD:
+      node -v
+      g++ --version
+
+Paso 4: Iniciar la aplicación en PowerShell o CMD:
+      cd cpp-mastery-academy
+      npm start
+      (o bien: node server.js)
+
+Paso 5: Abrir el navegador en:
+      http://localhost:3000
+
+(Nota: Si el puerto 3000 estuviera ocupado:
+ - En Linux: PORT=4000 npm start
+ - En Windows PowerShell: $env:PORT=4000; npm start
+ - En Windows CMD: set PORT=4000 && npm start)
 
 Para detener el servidor en cualquier momento, presiona `Ctrl + C` en la
 terminal donde lo hayas iniciado.
 
 
-4. COMO EJECUTAR LAS PRUEBAS AUTOMATICAS (OPCIONAL)
+5. COMO EJECUTAR LAS PRUEBAS AUTOMATICAS (OPCIONAL)
 --------------------------------------------------------------------------------
 Si deseas comprobar que el compilador `g++` y las 17 lecciones del curso
-funcionan correctamente desde la terminal, ejecuta:
+funcionan correctamente desde la terminal (en Linux o Windows), ejecuta:
 
     npm test
 
 
-5. ESTRUCTURA DE ARCHIVOS DEL PROYECTO
+6. ESTRUCTURA DE ARCHIVOS DEL PROYECTO
 --------------------------------------------------------------------------------
-/home/wachinex/Documentos/appAgy/
+cpp-mastery-academy/
 ├── package.json          -> Configuración de scripts (npm start / npm test)
 ├── server.js             -> Servidor backend Node.js + integración con g++
 ├── test-server.js        -> Script de pruebas automáticas del curso
-├── INSTRUCCIONES.txt     -> Este archivo de contexto y guía de inicio
+├── README.md             -> Documentación en formato Markdown para GitHub
+├── INSTRUCCIONES.txt     -> Este archivo de contexto y guía multiplataforma
 └── public/
     ├── index.html        -> Estructura visual de la aplicación
-    ├── styles.css        -> Estilos oscuros tipo IDE moderno
+    ├── styles.css        -> Tema Gruvbox Dark inspirado en Zed IDE
     ├── curriculum.js     -> Contenido de los 8 módulos, quizzes y retos
-    └── app.js            -> Lógica interactiva del frontend y editor
+    └── app.js            -> Lógica interactiva del frontend y editor C++
 ================================================================================

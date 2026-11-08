@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 3000;
 const PUBLIC_DIR = path.join(__dirname, 'public');
 const MAX_EXEC_TIME_MS = 4000; // 4 segundos máximo por ejecución (protección contra bucles infinitos)
 const MAX_OUTPUT_LENGTH = 64 * 1024; // 64 KB máximo de salida
+const BINARY_NAME = process.platform === 'win32' ? 'program.exe' : 'program';
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -222,7 +223,7 @@ const server = http.createServer(async (req, res) => {
 
       sessionDir = createTempSessionDir();
       const sourcePath = path.join(sessionDir, 'main.cpp');
-      const binaryPath = path.join(sessionDir, 'program');
+      const binaryPath = path.join(sessionDir, BINARY_NAME);
 
       fs.writeFileSync(sourcePath, code, 'utf8');
 
@@ -279,7 +280,7 @@ const server = http.createServer(async (req, res) => {
 
       sessionDir = createTempSessionDir();
       const sourcePath = path.join(sessionDir, 'main.cpp');
-      const binaryPath = path.join(sessionDir, 'program');
+      const binaryPath = path.join(sessionDir, BINARY_NAME);
 
       fs.writeFileSync(sourcePath, code, 'utf8');
 
